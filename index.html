@@ -8,14 +8,18 @@
     body {
       font-family: Arial, sans-serif;
       text-align: center;
-      margin-top: 50px;
+      margin: 50px 20px;
     }
     #qrcode {
       margin: 20px auto;
     }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+      font-size: 16px;
+    }
     #downloadBtn {
       margin-top: 10px;
-      padding: 10px 20px;
       background: #0078d7;
       color: #fff;
       border: none;
@@ -25,23 +29,20 @@
     #downloadBtn:hover {
       background: #005fa3;
     }
-    input, button {
-      padding: 10px;
-      margin: 5px;
-    }
   </style>
 </head>
 <body>
 
   <h1>QR Code Generator</h1>
-  
+  <p>Enter text or URL below and generate a QR code. You can download it too!</p>
+
   <!-- Input for text or URL -->
   <input type="text" id="text" placeholder="Enter text or URL" />
   <button id="generateBtn">Generate QR Code</button>
-  
+
   <!-- Container for QR code -->
   <div id="qrcode"></div>
-  
+
   <!-- Download button -->
   <button id="downloadBtn">Download QR Code</button>
 
@@ -53,7 +54,7 @@
     const qrcodeContainer = document.getElementById("qrcode");
 
     generateBtn.addEventListener("click", () => {
-      const text = document.getElementById("text").value;
+      const text = document.getElementById("text").value.trim();
       if (!text) return alert("Please enter text or URL!");
 
       // Clear previous QR code
@@ -81,3 +82,4 @@
 
 </body>
 </html>
+
