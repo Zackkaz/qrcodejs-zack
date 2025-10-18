@@ -1,44 +1,83 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<title>Cross-Browser QRCode generator for Javascript</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
-<script type="text/javascript" src="jquery.min.js"></script>
-<script type="text/javascript" src="qrcode.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Generator | Zack</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    #qrcode {
+      margin: 20px auto;
+    }
+    #downloadBtn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #0078d7;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #downloadBtn:hover {
+      background: #005fa3;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+    }
+  </style>
 </head>
 <body>
-<input id="text" type="text" value="http://jindo.dev.naver.com/collie" style="width:80%" /><br />
-<div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
 
-<script type="text/javascript">
-var qrcode = new QRCode(document.getElementById("qrcode"), {
-	width : 100,
-	height : 100
-});
+  <h1>QR Code Generator</h1>
+  
+  <!-- Input for text or URL -->
+  <input type="text" id="text" placeholder="Enter text or URL" />
+  <button id="generateBtn">Generate QR Code</button>
+  
+  <!-- Container for QR code -->
+  <div id="qrcode"></div>
+  
+  <!-- Download button -->
+  <button id="downloadBtn">Download QR Code</button>
 
-function makeCode () {		
-	var elText = document.getElementById("text");
-	
-	if (!elText.value) {
-		alert("Input a text");
-		elText.focus();
-		return;
-	}
-	
-	qrcode.makeCode(elText.value);
-}
+  <!-- Include QRCode.js library -->
+  <script src="qrcode.min.js"></script>
 
-makeCode();
+  <script>
+    const generateBtn = document.getElementById("generateBtn");
+    const qrcodeContainer = document.getElementById("qrcode");
 
-$("#text").
-	on("blur", function () {
-		makeCode();
-	}).
-	on("keydown", function (e) {
-		if (e.keyCode == 13) {
-			makeCode();
-		}
-	});
-</script>
+    generateBtn.addEventListener("click", () => {
+      const text = document.getElementById("text").value;
+      if (!text) return alert("Please enter text or URL!");
+
+      // Clear previous QR code
+      qrcodeContainer.innerHTML = "";
+
+      // Generate new QR code
+      new QRCode(qrcodeContainer, {
+        text: text,
+        width: 200,
+        height: 200
+      });
+    });
+
+    // Download button functionality
+    document.getElementById("downloadBtn").addEventListener("click", function() {
+      const qrImg = qrcodeContainer.querySelector("img") || qrcodeContainer.querySelector("canvas");
+      if (!qrImg) return alert("Generate a QR code first!");
+
+      const link = document.createElement("a");
+      link.download = "qrcode.png";
+      link.href = qrImg.tagName.toLowerCase() === "canvas" ? qrImg.toDataURL("image/png") : qrImg.src;
+      link.click();
+    });
+  </script>
+
 </body>
+</html>
